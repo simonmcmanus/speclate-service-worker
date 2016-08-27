@@ -10,12 +10,12 @@ module.exports = function(spec) {
     var pageName = spec[page].page;
     var routeName = page.slice(0, -5);
     pages.push(page);
-    // pages.push('/pages/' + pageName + '/' + pageName + '.html' );
-    // specs.push('/api/speclate/' + routeName + '.json' );
-    // for (var selector in spec[page].spec) {
-    //   var component = spec[page].spec[selector].component;
-    //   components.push('//components/' + component + '/' + component + '.html');
-    // }
+    pages.push('pages/' + pageName + '/' + pageName + '.html' );
+    specs.push('/api/speclate' + routeName + '.json' );
+    for (var selector in spec[page].spec) {
+      var component = spec[page].spec[selector].component;
+      components.push('components/' + component + '/' + component + '.html');
+    }
   });
 
   return {
@@ -24,5 +24,4 @@ module.exports = function(spec) {
     specs: specs,
     layout: layout
   }
-
 }
