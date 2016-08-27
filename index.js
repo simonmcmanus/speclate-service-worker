@@ -16,7 +16,7 @@ module.exports = function(spec, version, extraFiles) {
         e.waitUntil(
             [
                 caches.open(cacheName + 'layout').then(cache => {
-                    return cache.addAll(out.layout).then(() => self.skipWaiting());
+                    return cache.addAll(out.layout);
                 }),
                 caches.open(cacheName + 'components').then(cache => {
                     return cache.addAll(out.components);
@@ -29,6 +29,18 @@ module.exports = function(spec, version, extraFiles) {
                 }),
                 caches.open(cacheName + 'extras').then(cache => {
                     return cache.addAll(extraFiles);
+                }),
+                caches.open(cacheName + 'routes').then(cache => {
+
+                    fetch('/pages/layout.html').then(function(layout) {
+
+                        out.routes.forEach(function(route) {
+
+                            cache.put(route, layout.clone());
+                        })
+
+                    });
+
                 })
             ]
         )
@@ -39,7 +51,9 @@ module.exports = function(spec, version, extraFiles) {
         // when the browser fetches a url, either response with
     // the cached object or go ahead and fetch the actual url
     self.addEventListener('fetch', event => {
-        var request = event.request
+        var request = event.request;
+                //return  event.respondWith(caches.match('/pages/layout.html'));
+
         if (request.url.indexOf('/api/speclate') > 0) {
             return event.respondWith(
                 // try the network first
@@ -51,7 +65,9 @@ module.exports = function(spec, version, extraFiles) {
                         return caches.match(request).then(response => response);
                     })
             );
-        } else {
+        //} else if (request.url === '/speak.html') {
+//            return  event.respondWith(caches.match('/pages/layout.html'));
+        }else {
             return event.respondWith(caches.match(event.request).then(res => res || fetch(event.request)));
         }
     });

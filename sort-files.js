@@ -1,15 +1,16 @@
 module.exports = function(spec) {
 
-  var layout = ['/pages/layout.html'];
+  var layout = [ '/pages/layout.html' ];
   var components = [];
   var pages = [];
+  var routes = [];
   var specs = [];
 
   Object.keys(spec).forEach(function (page) {
     // no de-duping going on - same page/component could be listed twice.
     var pageName = spec[page].page;
     var routeName = page.slice(0, -5);
-    pages.push(page);
+    routes.push(page);
     pages.push('pages/' + pageName + '/' + pageName + '.html' );
     specs.push('/api/speclate' + routeName + '.json' );
     for (var selector in spec[page].spec) {
@@ -21,6 +22,7 @@ module.exports = function(spec) {
   return {
     components: components,
     pages: pages,
+    routes: routes,
     specs: specs,
     layout: layout
   }
