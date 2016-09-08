@@ -5,8 +5,6 @@ module.exports = function(spec, version) {
 
     var out = swSortFiles(spec);
 
-
-    console.log('sorted files', out);
     var cacheName = 'v' + version + '::';
     var self = this;
     self.addEventListener('activate', event => {
@@ -75,9 +73,6 @@ module.exports = function(spec, version) {
                     })
             );
         } else {
-            // return  fetch(event.request).catch((e) => {
-            //     console.log('caught', e)
-            // })
             return event.respondWith(caches.match(event.request).then(res => res || fetch(event.request)));
         }
     });
