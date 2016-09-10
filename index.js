@@ -2,13 +2,25 @@ var swSortFiles = require('./sort-files');
 var url = require('url');
 
 module.exports = function(spec, version) {
-
+    spec = spec.options.scanSpecForFiles(spec);
     var out = swSortFiles(spec);
-
     var cacheName = 'v' + version + '::';
     var self = this;
     self.addEventListener('activate', event => {
-         console.log('activated');
+          event.waitUntil(
+            caches.keys()
+            .then(function (keys) {
+                return Promise.all(keys
+                .filter(function (key) {
+                    return key.indexOf(cacheName) !== 0;
+                })
+                .map(function (key) {
+                    return caches.delete(key);
+                })
+                );
+            })
+        );
+        console.log('activated and cache updated');
     });
 
     self.addEventListener('install', e => {
@@ -17,15 +29,12 @@ module.exports = function(spec, version) {
         e.waitUntil(
             [
                 caches.open(cacheName + 'layout').then(cache => {
-                    // hash
                     return cache.addAll(out.layout);
                 }),
                 caches.open(cacheName + 'components').then(cache => {
-                    // hash
                     return cache.addAll(out.components);
                 }),
                 caches.open(cacheName + 'pages').then(cache => {
-                    // hash
                     return cache.addAll(out.pages);
                 }),
                 caches.open(cacheName + 'specs').then(cache => {
@@ -63,13 +72,14 @@ module.exports = function(spec, version) {
 
        if (request.url.indexOf('/api/speclate') > 0) {
             return event.respondWith(
-                // try the network first
                 fetch(request)
                     .then( response => response)
                     .then( response => addToCache(cacheName + 'specs', request, response))
                     .catch( () => {
                         // fallback to the cache.
-                        return caches.match(request).then(response => response);
+                        return caches
+                                .match(request)
+                                .then(response => response)
                     })
             );
         } else {

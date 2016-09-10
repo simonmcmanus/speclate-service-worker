@@ -3,7 +3,7 @@ module.exports = function(spec) {
   var layout = [ '/pages/layout.html' ];
   var components = [];
   var pages = [];
-  var routes = [];
+  var routes = ['/'];
   var specs = [];
 
   Object.keys(spec).forEach(function (page) {
