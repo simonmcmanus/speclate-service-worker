@@ -1,5 +1,11 @@
 
 
+# 1.2.0
+
+handle forward slash in sortfiles [view commit](http://github.com/$3/$packageName/commit/6a401c654325d40d19e706cba2c174f68a4a2556) 
+
+ 
+
 # 1.1.0
 
 check if extra files exist and checks for scanSpecForFiles [view commit](http://github.com/$3/$packageName/commit/bceb2c7bb24ece386bb0c173cc57ef8c82445713) 
