@@ -15,5 +15,4 @@ var version = '1.6'
 
 serviceWorker(spec, version)
 
-
 ```
