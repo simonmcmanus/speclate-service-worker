@@ -1,7 +1,9 @@
 var swSortFiles = require('./sort-files')
 
 module.exports = function (spec, version) {
-  spec = spec.options.scanSpecForFiles(spec, true)
+  if (spec.options.scanSpecForFiles) {
+    spec = spec.options.scanSpecForFiles(spec, true)
+  }
   var out = swSortFiles(spec)
   var cacheName = 'v' + version + '::'
   var self = this
@@ -24,7 +26,11 @@ module.exports = function (spec, version) {
           return cache.addAll(out.specs)
         }),
         caches.open(cacheName + 'extras').then(cache => {
-          return cache.addAll(out.extras)
+          if (out.extras) {
+            return cache.addAll(out.extras)
+          } else {
+            return cache
+          }
         }),
         caches.open(cacheName + 'routes').then(cache => {
           // could this be handled in the fetch listener? to save duplicating the layout each time.
