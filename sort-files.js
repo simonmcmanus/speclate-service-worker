@@ -12,7 +12,12 @@ module.exports = function (spec) {
       return
     }
     var pageName = spec[page].page
-    var routeName = page.slice(0, -5)
+    var routeName
+    if (page === '/') {
+      routeName = 'index'
+    } else {
+      routeName = page.slice(0, -5)
+    }
     routes.push(page)
     pages.push('/pages/' + pageName + '/' + pageName + '.html')
 
