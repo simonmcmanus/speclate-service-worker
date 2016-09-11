@@ -5,7 +5,6 @@ Given a speclate spec, works out which files are needed offline, and generates t
 
 Also provides a network first strategy for specs to ensure users are always seeing the latest data.
 
-
 ```js
 
 'use strict'
