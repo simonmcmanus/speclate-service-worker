@@ -6,5 +6,12 @@
   "scripts": {
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "standard": {
+    "globals": [
+      "caches",
+      "fetch"
+    ],
+    "ignore": []
+  }
 }
