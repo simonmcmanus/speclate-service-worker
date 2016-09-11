@@ -27,6 +27,7 @@ module.exports = function (spec, version) {
           return cache.addAll(out.extras)
         }),
         caches.open(cacheName + 'routes').then(cache => {
+          // could this be handled in the fetch listener? to save duplicating the layout each time.
           fetch('/pages/layout.html').then(function (layout) {
             out.routes.forEach(function (route) {
               cache.put(route, layout.clone())
