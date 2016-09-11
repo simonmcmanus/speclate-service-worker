@@ -21,11 +21,9 @@ module.exports = function (spec, version) {
           return cache.addAll(out.pages)
         }),
         caches.open(cacheName + 'specs').then(cache => {
-                    // can these be version?
           return cache.addAll(out.specs)
         }),
         caches.open(cacheName + 'extras').then(cache => {
-                    // these files should be hashed.
           return cache.addAll(out.extras)
         }),
         caches.open(cacheName + 'routes').then(cache => {
@@ -35,8 +33,7 @@ module.exports = function (spec, version) {
             })
           })
         })
-      ]
-        )
+      ])
   })
 
     // when the browser fetches a url, either response with
@@ -89,4 +86,3 @@ var addToCache = function (cacheKey, request, response) {
   }
   return false
 }
-

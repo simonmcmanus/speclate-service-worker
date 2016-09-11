@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test": "standard"
   },
   "author": "",
   "license": "ISC",
@@ -13,5 +14,8 @@
       "fetch"
     ],
     "ignore": []
+  },
+  "devDependencies": {
+    "standard": "^8.0.0"
   }
 }
