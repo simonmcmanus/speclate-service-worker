@@ -79,7 +79,6 @@ module.exports = function (spec, version) {
                 )
             })
         )
-    console.log('activated and cache updated')
   })
 }
 
