@@ -8,7 +8,7 @@ module.exports = function (spec) {
   Object.keys(spec).forEach(function (page) {
     // no de-duping going on - same page/component could be listed twice.
 
-    if (page === 'options') {
+    if (page === 'options' || page === 'defaultSpec') {
       return
     }
     var pageName = spec[page].page
@@ -19,12 +19,16 @@ module.exports = function (spec) {
       routeName = page.slice(0, -5)
     }
     routes.push(page)
-    pages.push('/pages/' + pageName + '/' + pageName + '.html')
+    if (pageName) {
+      pages.push('/pages/' + pageName + '/' + pageName + '.html')
+    }
 
     specs.push('/api/speclate' + routeName + '.json')
     for (var selector in spec[page].spec) {
       var component = spec[page].spec[selector].component
-      components.push('/components/' + component + '/' + component + '.html')
+      if (component) {
+        components.push('/components/' + component + '/' + component + '.html')
+      }
     }
   })
 
