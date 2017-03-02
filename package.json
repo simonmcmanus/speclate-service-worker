@@ -16,6 +16,6 @@
     "ignore": []
   },
   "devDependencies": {
-    "standard": "^8.0.0"
+    "standard": "^10.0.0-beta.0"
   }
 }
