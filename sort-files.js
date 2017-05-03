@@ -19,18 +19,18 @@ module.exports = function (spec) {
       routeName = page.slice(0, -5)
     }
     routes.push(page)
+
     if (pageName) {
       pages.push('/pages/' + pageName + '/' + pageName + '.html')
     }
 
     specs.push('/api/speclate' + routeName + '.json')
-    for (var selector in spec[page].spec) {
-      var component = spec[page].spec[selector].component
-      if (component) {
-        components.push('/components/' + component + '/' + component + '.html')
-      }
-    }
+
+    components = components.concat(getComponents(spec[page].spec))
   })
+  if (spec.defaultSpec) {
+    components = components.concat(getComponents(spec.defaultSpec))
+  }
 
   return {
     components: components,
@@ -40,4 +40,16 @@ module.exports = function (spec) {
     layout: layout,
     extras: spec.options.files
   }
+}
+
+
+function getComponents (spec) {
+  var components = []
+  for (var selector in spec) {
+    var component = spec[selector].component
+    if (component) {
+      components.push('/components/' + component + '/' + component + '.html')
+    }
+  }
+  return components
 }
