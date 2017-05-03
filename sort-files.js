@@ -42,7 +42,6 @@ module.exports = function (spec) {
   }
 }
 
-
 function getComponents (spec) {
   var components = []
   for (var selector in spec) {
