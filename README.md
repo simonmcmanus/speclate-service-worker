@@ -1,5 +1,7 @@
 #Speclate service worker
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/simonmcmanus/speclate-service-worker.svg)](https://greenkeeper.io/)
+
 
 Given a speclate spec, works out which files are needed offline, and generates the service worker accordingly.
 
