@@ -24,7 +24,7 @@ module.exports = function (spec) {
       pages.push('/pages/' + pageName + '/' + pageName + '.html')
     }
 
-    specs.push('/api/speclate' + routeName + '.json')
+    specs.push(routeName + '.json')
 
     components = components.concat(getComponents(spec[page].spec))
   })
