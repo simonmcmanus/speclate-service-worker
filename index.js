@@ -34,7 +34,6 @@ module.exports = function (spec, version) {
         }),
         caches.open(cacheName + 'routes').then(cache => {
           out.routes.forEach(function (route) {
-
             if (route === '/') {
               route = '/index.html'
             }
@@ -88,7 +87,6 @@ module.exports = function (spec, version) {
   function update (request) {
     return caches.open(cacheName + 'specs').then(function (cache) {
       return fetch(request).then(function (response) {
-
         return cache.put(request, response.clone()).then(function () {
           return response
         })
