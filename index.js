@@ -115,14 +115,18 @@ module.exports = function (spec, version) {
   self.addEventListener('activate', event => {
     event.waitUntil(
             caches.keys()
-            .then(function (keys) {
-              return Promise.all(keys
-                .filter(function (key) {
-                  return key.indexOf(cacheName) !== 0
-                })
-                .map(function (key) {
-                  return caches.delete(key)
-                })
-                )
-            })
-        }
+                  .then(function (keys) {
+                    return Promise
+                            .all(
+                              keys
+                                .filter(function (key) {
+                                  return key.indexOf(cacheName) !== 0
+                                })
+                                .map(function (key) {
+                                  return caches.delete(key)
+                                })
+                              )
+                  })
+    )
+  })
+}
