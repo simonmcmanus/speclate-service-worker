@@ -75,7 +75,7 @@ module.exports = function (spec, version) {
   function fromCache (request) {
     return caches.open(cacheName + 'specs').then(function (cache) {
       return cache.match(request).then(function (matching) {
-        return matching || Promise.reject('no-match')
+        return matching || Promise.reject(new Error('no-match'))
       })
     })
   }
@@ -125,6 +125,4 @@ module.exports = function (spec, version) {
                 })
                 )
             })
-        )
-  })
-}
+        }
