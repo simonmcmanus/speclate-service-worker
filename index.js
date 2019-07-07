@@ -1,53 +1,49 @@
-var swSortFiles = require('./sort-files')
 
-module.exports = function (spec, version) {
-  if (spec.options.scanSpecForFiles) {
-    spec = spec.options.scanSpecForFiles(spec, true)
-  }
-  var out = swSortFiles(spec)
+module.exports = function (files, version) {
   var cacheName = 'v' + version + '::'
   var self = this
 
   self.addEventListener('install', e => {
-        // once the SW is installed, go ahead and fetch the resources
-        // to make this work offline
+    // once the SW is installed, go ahead and fetch the resources
+    // to make this work offline
     e.waitUntil(
       [
         caches.open(cacheName + 'layout').then(cache => {
-          return cache.addAll(out.layout)
+          return cache.addAll(files.layout)
         }),
         caches.open(cacheName + 'components').then(cache => {
-          return cache.addAll(out.components)
+          var componentPaths = files.components.map(function (component) {
+            console.log('->', '/components/' + component)
+            return '/components/' + component
+          })
+          return cache.addAll(componentPaths)
         }),
         caches.open(cacheName + 'pages').then(cache => {
-          return cache.addAll(out.pages)
+          var pagePaths = files.pages.map(function (page) {
+            return '/pages/' + page
+          })
+          return cache.addAll(pagePaths)
         }),
         caches.open(cacheName + 'specs').then(cache => {
-          return cache.addAll(out.specs)
+          return cache.addAll(files.specs)
         }),
         caches.open(cacheName + 'extras').then(cache => {
-          if (out.extras) {
-            return cache.addAll(out.extras)
+          if (files.extras) {
+            return cache.addAll(files.extras)
           } else {
             return cache
           }
         }),
         caches.open(cacheName + 'routes').then(cache => {
-          out.routes.forEach(function (route) {
+          files.routes.forEach(function (route) {
             if (route === '/') {
               route = '/index.html'
             }
 
-            if (spec[route].strategy === 'app-shell') {
-              fetch('/pages/layout.html').then(function (layout) {
-                cache.put(route, layout.clone())
-              })
-            } else {
-              fetch(route).then(function (page) {
-                // should we add the blurred class before we add the page to the cache
-                cache.put(route, page.clone())
-              })
-            }
+            fetch(route).then(function (page) {
+              // should we add the blurred class before we add the page to the cache
+              cache.put(route, page.clone())
+            })
           })
         })
       ])
@@ -55,12 +51,10 @@ module.exports = function (spec, version) {
 
   self.addEventListener('fetch', event => {
     var request = event.request
-
     if (request.url.indexOf('.json') > 0) {
       event.respondWith(fromCache(event.request))
       event.waitUntil(
-          update(event.request)
-
+        update(event.request)
           .then(refresh)
       )
     } else {
@@ -114,19 +108,19 @@ module.exports = function (spec, version) {
 
   self.addEventListener('activate', event => {
     event.waitUntil(
-            caches.keys()
-                  .then(function (keys) {
-                    return Promise
-                            .all(
-                              keys
-                                .filter(function (key) {
-                                  return key.indexOf(cacheName) !== 0
-                                })
-                                .map(function (key) {
-                                  return caches.delete(key)
-                                })
-                              )
-                  })
+      caches.keys()
+        .then(function (keys) {
+          return Promise
+            .all(
+              keys
+                .filter(function (key) {
+                  return key.indexOf(cacheName) !== 0
+                })
+                .map(function (key) {
+                  return caches.delete(key)
+                })
+            )
+        })
     )
   })
 }
