@@ -13,7 +13,6 @@ module.exports = function (files, version) {
         }),
         caches.open(cacheName + 'components').then(cache => {
           var componentPaths = files.components.map(function (component) {
-            console.log('->', '/components/' + component)
             return '/components/' + component
           })
           return cache.addAll(componentPaths)

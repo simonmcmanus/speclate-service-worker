@@ -11,9 +11,9 @@ Also provides a network first strategy for specs to ensure users are always seei
 
 'use strict'
 var serviceWorker = require('speclate-service-worker')
-var spec = require('../spec')
+var offlineSpec = require('../offline-spec')
 var version = '1.6'
 
-serviceWorker(spec, version)
+serviceWorker(offlineSpec, version)
 
 ```
